@@ -16,6 +16,10 @@ jobs:
     steps:
       - name: Trigger delivery pipeline
         run: |
-          curl -sS --fail-with-body -X POST \
+          # Log only the HTTP status code — the response body contains
+          # operational data and this is a public repository.
+          code=$(curl -sS -o /dev/null -w "%{http_code}" -X POST \
             "https://line-crm-worker.pero3455.workers.dev/api/cron/run" \
-            -H "Authorization: Bearer ${{ secrets.WORKER_API_KEY }}"
+            -H "Authorization: Bearer ${{ secrets.WORKER_API_KEY }}")
+          echo "HTTP $code"
+          test "$code" = "200"
