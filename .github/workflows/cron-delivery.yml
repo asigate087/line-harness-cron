@@ -1,0 +1,21 @@
+# Fallback scheduler for line-crm-worker.
+# Cloudflare cron triggers are not firing on the worker's account, so this
+# workflow calls the worker's delivery endpoint every 5 minutes instead.
+# Disable this workflow once Cloudflare cron works again.
+name: cron-delivery
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+
+jobs:
+  deliver:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Trigger delivery pipeline
+        run: |
+          curl -sS --fail-with-body -X POST \
+            "https://line-crm-worker.pero3455.workers.dev/api/cron/run" \
+            -H "Authorization: Bearer ${{ secrets.WORKER_API_KEY }}"
