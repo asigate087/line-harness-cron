@@ -1,4 +1,4 @@
-# Fallback scheduler for line-crm-worker.
+# Fallback scheduler for line-crm-worker (v2).
 # Cloudflare cron triggers are not firing on the worker's account, so this
 # workflow calls the worker's delivery endpoint every 5 minutes instead.
 # Disable this workflow once Cloudflare cron works again.
