@@ -6,7 +6,9 @@ name: cron-delivery
 
 on:
   schedule:
-    - cron: '*/5 * * * *'
+    # 15-minute interval: GitHub throttles/skips very short (5-min) schedules
+    # under load, and step deliveries are day-granularity anyway.
+    - cron: '*/15 * * * *'
   workflow_dispatch:
 
 jobs:
